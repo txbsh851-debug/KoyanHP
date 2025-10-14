@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{%block content%}
+<div class="container">
+<br>
+<h1>新規登録</h1>
+<br>
+<form method="post" action="{{ url_for('create') }}" enctype="multipart/form-data">
+    <label for="title" class="form-label"><h3>タイトル</h3></label>
+    <br>
+    <input type="text" name="title" class="form-control">
+    <label for="body" class="form-label"><h3>内容</h3></label>
+    <textarea name="body" class="form-control" rows="10"></textarea>
+    <br>
+    <input type="file" name="file" class="form-control">
+    <br>
+    <input type ="submit" name="新規登録" value="登録" role=button class="btn btn-outline-success btn-lg fw-bold">
+</form>
+</div>
+{% endblock %}

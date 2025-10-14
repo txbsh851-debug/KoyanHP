@@ -1,0 +1,34 @@
+.navbar {
+  background-color: #f8f9fa; /* 任意の色に設定 */
+  border-radius: 5px;
+  padding: 20px;
+  height: 140px;
+  z-index: 1050; 
+}
+h1 {
+  color: #6c757d;
+}
+h2 {
+  color: #6c757d;
+  /*font-weight: lighter;*/
+}
+h3 {
+  color: #6c757d;
+  /*font-weight: lighter;*/
+}
+h4 {
+  color: #6c757d;
+}
+h5 {
+  color: #6c757d;
+  /*font-weight: lighter;*/
+  font-size: 20px;
+}
+h6 {
+  color: #6c757d;
+}
+p {
+  color: #6c757d;
+  font-size: 19px; /* 20ピクセルで指定 */
+  font-weight: lighter;
+}
