@@ -7,6 +7,7 @@ from flask_login import UserMixin, LoginManager, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from flask_bootstrap import Bootstrap
+from zoneinfo import ZoneInfo
 
 app = Flask(__name__)
 
@@ -19,11 +20,14 @@ bootstrap = Bootstrap(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-login_manager.login_view = 'login'
+login_manager.login_view = "login"
+
 
 # 未ログインユーザーにメッセージ表示
 def localize_callback(*args, **kwarg):
-    return 'このページにアクセスするには、ログインが必要です'
+    return "このページにアクセスするには、ログインが必要です"
+
+
 login_manager.localize_callback = localize_callback
 
 # アップロードするフォルダのパスを設定
@@ -35,7 +39,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # 時間を取得
-now = datetime.now()
+now = datetime.now(ZoneInfo("Asia/Tokyo"))
 
 formatted_datetime = now.strftime("%Y-%m-%d %H:%M")
 
@@ -149,9 +153,11 @@ def delete(id):
     db.session.commit()
     return redirect("/")
 
+
 @app.route("/contact", methods=["GET"])
 def contact():
     return render_template("contact.html")
+
 
 if __name__ == "__main__":
     app.run()
