@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="padding: 10px;">
+    <h1>お問い合わせ確認</h1>
+    <p>お名前: {{ name }}</p>
+    <p>メールアドレス: {{ email }}</p>
+    <p>お問い合わせ内容:</p>
+    <p>{{ message }}</p>
+    <form method="post" action="go">
+        <input type="hidden" name="name" value="{{ name }}" class="form-control">
+        <input type="hidden" name="email" value="{{ email }}" class="form-control">
+        <input type="hidden" name="message" value="{{ message }}" class="form-control">
+        <button type="submit" role=button class="btn btn-outline-success btn-lg fw-bold">送信する</button>
+    </form>
+    <br>
+    <form>
+        <button type="button" role=button class="btn btn-outline-success btn-lg fw-bold" onclick="history.back()">戻る</button>
+    </form>
+</div
+{% endblock %}

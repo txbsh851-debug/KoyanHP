@@ -8,6 +8,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from flask_bootstrap import Bootstrap
 from zoneinfo import ZoneInfo
+from flask_mail import Mail, Message
+from flask import Flask, request, render_template, redirect, url_for
+import smtplib
+from email.mime.text import MIMEText
+import config
 
 app = Flask(__name__)
 
@@ -31,7 +36,7 @@ def localize_callback(*args, **kwarg):
 login_manager.localize_callback = localize_callback
 
 # アップロードするフォルダのパスを設定
-UPLOAD_FOLDER = "static/img"
+UPLOAD_FOLDER = "./static/img"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # フォルダが存在しない場合は作成する
@@ -61,6 +66,38 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+# Ymobile SMTPサーバーの設定
+#app.config["MAIL_SERVER"] = "ymobilesmtp.mail.yahoo.ne.jp"
+#app.config["MAIL_PORT"] = 587  # (SSL)
+#app.config["MAIL_USE_TLS"] = True  # TLSを使用する場合
+#app.config["MAIL_USE_SSL"] = False  # SSLを使用する場合
+#app.config["MAIL_USERNAME"] = "txbsh851@gmail.com"
+#app.config["MAIL_PASSWORD"] = "Koya!2357"  # Gmailのアプリパスワード
+#app.config["MAIL_DEFAULT_SENDER"] = ("Koya Takahashi", "txbsh851@gmail.com")
+
+# Gmail SMTPサーバーの設定
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587  # (SSL)
+app.config["MAIL_USE_TLS"] = True  # TLSを使用する場合
+app.config["MAIL_USE_SSL"] = False  # SSLを使用する場合
+app.config["MAIL_USERNAME"] = "txbsh851@gmail.com"
+app.config["MAIL_PASSWORD"] = "sixw erwr swqo kacd"  # Gmailのアプリパスワード
+app.config["MAIL_DEFAULT_SENDER"] = ("Koya Takahashi", "txbsh851@gmail.com")
+
+mail = Mail(app)
+
+
+# メールを送る関数
+def send_email(to, subject, body):
+    msg = Message(subject, recipients=[to])
+    msg.body = body
+    try:
+        mail.send(msg)
+        print(f"{to} 宛にメールを送信しました。")
+    except Exception as e:
+        print(f"メール送信中にエラーが発生しました: {e}")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -154,9 +191,28 @@ def delete(id):
     return redirect("/")
 
 
-@app.route("/contact", methods=["GET"])
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    if request.method == "GET":
+        return render_template("contact.html")
+
+    elif request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        message = request.form.get("message")
+
+    return render_template("confirmation.html", name=name, email=email, message=message)
+
+
+@app.route("/go", methods=["POST"])
+def send_test_email():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    message = request.form.get("message")
+    send_email(email, name, "送られたメッセージは\n"+message+"\nです。")
+    send_email("txbsh851@gmail.com", name, message)
+
+    return render_template("/success.html")
 
 
 if __name__ == "__main__":

@@ -32,3 +32,10 @@ p {
   font-size: 19px; /* 20ピクセルで指定 */
   font-weight: lighter;
 }
+
+.bg01 {
+  background: url("../img/IMG_0442_1.jpg") no-repeat left bottom / contain;
+  background-size: 100% auto;
+  height: 900px;
+  padding: 10px;
+}
