@@ -43,17 +43,19 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# 時間を取得
-now = datetime.now(ZoneInfo("Asia/Tokyo"))
 
-formatted_datetime = now.strftime("%Y-%m-%d %H:%M")
+# 時間を取得
+def time():
+    now = datetime.now(ZoneInfo("Asia/Tokyo"))
+    formatted_datetime = now.strftime("%Y-%m-%d %H:%M")
+    return formatted_datetime
 
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     body = db.Column(db.String(300), nullable=False)
-    create_at = db.Column(db.String(30), nullable=False, default=formatted_datetime)
+    create_at = db.Column(db.String(30), nullable=False, default=time())
     img_name = db.Column(db.String(100), nullable=True)
 
 
@@ -69,13 +71,13 @@ def load_user(user_id):
 
 
 # Ymobile SMTPサーバーの設定
-#app.config["MAIL_SERVER"] = "ymobilesmtp.mail.yahoo.ne.jp"
-#app.config["MAIL_PORT"] = 587  # (SSL)
-#app.config["MAIL_USE_TLS"] = True  # TLSを使用する場合
-#app.config["MAIL_USE_SSL"] = False  # SSLを使用する場合
-#app.config["MAIL_USERNAME"] = "txbsh851@gmail.com"
-#app.config["MAIL_PASSWORD"] = "Koya!2357"  # Gmailのアプリパスワード
-#app.config["MAIL_DEFAULT_SENDER"] = ("Koya Takahashi", "txbsh851@gmail.com")
+# app.config["MAIL_SERVER"] = "ymobilesmtp.mail.yahoo.ne.jp"
+# app.config["MAIL_PORT"] = 587  # (SSL)
+# app.config["MAIL_USE_TLS"] = True  # TLSを使用する場合
+# app.config["MAIL_USE_SSL"] = False  # SSLを使用する場合
+# app.config["MAIL_USERNAME"] = "txbsh851@gmail.com"
+# app.config["MAIL_PASSWORD"] = "Koya!2357"  # Gmailのアプリパスワード
+# app.config["MAIL_DEFAULT_SENDER"] = ("Koya Takahashi", "txbsh851@gmail.com")
 
 # Gmail SMTPサーバーの設定
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
@@ -103,8 +105,14 @@ def send_email(to, subject, body):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
+        return render_template("index.html")
+
+
+@app.route("/blog", methods=["GET", "POST"])
+def blog():
+    if request.method == "GET":
         posts = Post.query.all()
-        return render_template("index.html", posts=posts)
+        return render_template("blog.html", posts=posts)
 
 
 @app.route("/create", methods=["GET", "POST"])
@@ -124,7 +132,7 @@ def create():
         post = Post(title=title, body=body, img_name=save_path)
         db.session.add(post)
         db.session.commit()
-        return redirect("/")
+        return redirect("/blog")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -139,7 +147,7 @@ def login():
         if check_password_hash(user.password, password=password):
             # 一致していれば、ログインさせて、管理画面へリダイレクト
             login_user(user)
-            return redirect("/")
+            return redirect("/blog")
         else:
             # 間違ってる場合、エラー分と共にログイン画面へリダイレクト
             return redirect("/login", msg="ユーザー名/パスワードが違います")
@@ -209,7 +217,7 @@ def send_test_email():
     name = request.form.get("name")
     email = request.form.get("email")
     message = request.form.get("message")
-    send_email(email, name, "送られたメッセージは\n"+message+"\nです。")
+    send_email(email, name, "送られたメッセージは\n" + message + "\nです。")
     send_email("txbsh851@gmail.com", name, message)
 
     return render_template("/success.html")

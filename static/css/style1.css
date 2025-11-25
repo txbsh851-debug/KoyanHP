@@ -3,7 +3,7 @@
   border-radius: 5px;
   padding: 20px;
   height: 140px;
-  z-index: 1050; 
+  margin-bottom: -50px;
 }
 h1 {
   color: #6c757d;
@@ -13,8 +13,9 @@ h2 {
   /*font-weight: lighter;*/
 }
 h3 {
-  color: #6c757d;
-  /*font-weight: lighter;*/
+  color: #0000FF;
+  font-size: 50px;
+  padding: 220px 150px;
 }
 h4 {
   color: #6c757d;
@@ -31,4 +32,14 @@ p {
   color: #6c757d;
   font-size: 19px; /* 20ピクセルで指定 */
   font-weight: lighter;
+}
+
+.bg01 {
+    background: url("../img/IMG_0442_1.jpg") no-repeat;
+    background-size: contain;
+    width: auto;
+    height: 100vh;
+    /*background-position: 0 -200px;*/
+    margin: 0px;
+    padding: 0px;
 }

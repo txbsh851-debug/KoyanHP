@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="container">
+  <div class="row">
+    <div class="col-6 offset-6">
+      <!--<h1>バイク最高</h1>-->
+    </div>
+  </div>
+</section>
+
+    <div class="card" style="padding:15px; border: none;">
+      <div class="text-center">
+      </div>
+    </div>
+    <div class="container" style="border-radius: 10px; padding:20px; border: 2px solid #6c757d; background-color: #f0f0f0;">
+      <div class="row g-3">
+        {% for post in posts %}
+        <div class="col-xs-6 col-sm-4">
+          <div class="card" style="width: 21rem; border-radius: 10px;">
+            <img src= {{ post.img_name }} alt="画像ファイル" width="100" class="card-img-top" style="border-radius: 10px 10px 0 0;">
+            <div class="card-body" style="border-radius: 10px;">
+              <h4>{{ post.title}}</h4>
+              <h5>{{ post.body[:100]}}</h5>
+              <p>投稿日：{{ post.create_at}}</p>
+              <div class="container">
+                <a href="/{{post.id}}/update" role=button class="btn btn-outline-success">更新</a>
+                <a href="/{{post.id}}/delete" role=button class="btn btn-outline-danger">削除</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </dev>
+    </div>
+
+{% endblock %}
