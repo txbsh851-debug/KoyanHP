@@ -32,3 +32,10 @@ p {
   font-size: 19px; /* 20ピクセルで指定 */
   font-weight: lighter;
 }
+.btn-xxl {
+  padding: 15px 30px; /* 上下のパディングと左右のパディングを調整 */
+  font-size: 24px;   /* フォントサイズを調整 */
+  border-radius: 8px; /* 角丸のサイズを調整 */
+  height: 80px;
+  width: 300px;
+}

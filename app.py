@@ -186,7 +186,7 @@ def update(id):
         post.body = request.form.get("body")
 
         db.session.commit()
-        return redirect("/")
+        return redirect("/blog")
 
 
 @app.route("/<int:id>/delete", methods=["GET"])
@@ -196,7 +196,7 @@ def delete(id):
 
     db.session.delete(post)
     db.session.commit()
-    return redirect("/")
+    return redirect("/blog")
 
 
 @app.route("/contact", methods=["GET", "POST"])
