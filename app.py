@@ -130,7 +130,8 @@ def create():
         filename = file.filename
         save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(save_path)
-        post = Post(title=title, body=body, img_name=save_path)
+        create_at = time()
+        post = Post(title=title, body=body, img_name=save_path, create_at=create_at)
         db.session.add(post)
         db.session.commit()
         return redirect("/blog")
