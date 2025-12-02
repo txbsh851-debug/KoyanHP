@@ -2,7 +2,7 @@
   background-color: #f8f9fa; /* 任意の色に設定 */
   border-radius: 5px;
   padding: 20px;
-  height: 140px;
+  height: 100px;
   margin-bottom: -50px;
 }
 h1 {
@@ -37,7 +37,7 @@ p {
     background: url("../img/IMG_0442_1.jpg") no-repeat;
     background-size: contain;
     width: auto;
-    height: 100vh;
+    height: 100svh;
     /*background-position: 0 -200px;*/
     margin: 0px;
     padding: 0px;

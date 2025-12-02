@@ -36,27 +36,24 @@ def localize_callback(*args, **kwarg):
 login_manager.localize_callback = localize_callback
 
 # アップロードするフォルダのパスを設定
-UPLOAD_FOLDER = "../static/img"
+UPLOAD_FOLDER = "./static/img"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
 
 # フォルダが存在しない場合は作成する
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-
 # 時間を取得
-def time():
-    now = datetime.now(ZoneInfo("Asia/Tokyo"))
-    formatted_datetime = now.strftime("%Y-%m-%d %H:%M")
-    return formatted_datetime
+now = datetime.now(ZoneInfo("Asia/Tokyo"))
+
+formatted_datetime = now.strftime("%Y-%m-%d %H:%M")
 
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     body = db.Column(db.String(300), nullable=False)
-    create_at = db.Column(db.String(30), nullable=False, default=time())
+    create_at = db.Column(db.String(30), nullable=False, default=formatted_datetime)
     img_name = db.Column(db.String(100), nullable=True)
 
 
