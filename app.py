@@ -35,14 +35,11 @@ def localize_callback(*args, **kwarg):
 
 login_manager.localize_callback = localize_callback
 
+cwd = os.getcwd()
+
 # アップロードするフォルダのパスを設定
-UPLOAD_FOLDER = "../static/img"
+UPLOAD_FOLDER = "./static/img"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
-
-# フォルダが存在しない場合は作成する
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 
 # 時間を取得
