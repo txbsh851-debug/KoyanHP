@@ -1,18 +1,19 @@
 {% extends "base.html" %}
-
 {%block content%}
 <div class="container">
-<h1>編集画面</h1>
-<form method="POST">
-    <img src=  ../{{ post.img_name }} alt="画像ファイル" width="300" style="padding: 20px 0 20px 0;">
-    <br>
+<br>
+<h1>編集</h1>
+<br>
+<form method="post" action="update" enctype="multipart/form-data">
     <label for="title" class="form-label">タイトル</label>
     <input type="text" name="title" value={{ post.title }} class="form-control">
     <label for="body" class="form-label">内容</label>
     <input type="text" name="body" value={{ post.body}} class="form-control">
-    <!--<input type="file" name="file" class="form-control">-->
+    <br>
+    <img src=  ../{{ post.img_name }} alt="画像ファイル" width="300" style="padding: 20px 0 20px 0;">
+    <br>
+    <input type="file" name="file" class="form-control">
     <br>
     <input type ="submit" value="編集" class="btn btn-primary">
 </form>
-</div>
 {% endblock %}
