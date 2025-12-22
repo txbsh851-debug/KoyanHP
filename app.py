@@ -187,19 +187,24 @@ def update(id):
         if "file" in request.files:
             print("updateファイルが渡せてます。")
             file = request.files["file"]
-            filename = file.filename
-            save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-            file.save(save_path)
-            # ここ重要
-            ############################
-            post.img_name = save_path
-            ############################
-            post = Post(title=post.title, body=post.body, img_name=save_path)
-            # print(save_path)
-            # print(post.img_name)
-            post.img_name = save_path
-            db.session.commit()
-            return redirect("/blog")
+            if file.filename == "":
+                print("ファイル名がありません。")
+                db.session.commit()
+                return redirect("/blog")
+            else:
+                filename = file.filename
+                save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                file.save(save_path)
+                # ここ重要
+                ############################
+                post.img_name = save_path
+                ############################
+                post = Post(title=post.title, body=post.body, img_name=save_path)
+                # print(save_path)
+                # print(post.img_name)
+                post.img_name = save_path
+                db.session.commit()
+                return redirect("/blog")
         else:
             print("updateファイルが渡せてません。")
             db.session.commit()
