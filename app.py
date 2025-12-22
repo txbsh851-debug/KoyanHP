@@ -123,40 +123,41 @@ def create():
     elif request.method == "POST":
         title = request.form.get("title")
         body = request.form.get("body")
-        file = request.files["file"]
-        filename = file.filename
-        save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(save_path)
-        create_at = time()
-        post = Post(title=title, body=body, img_name=save_path, create_at=create_at)
-        db.session.add(post)
-        db.session.commit()
-        return redirect("/blog")
+        if "file" in request.files:
+            print("createファイルが渡せてます。")
+            file = request.files["file"]
+            filename = file.filename
+            save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(save_path)
+            create_at = time()
+            post = Post(title=title, body=body, img_name=save_path, create_at=create_at)
+            db.session.add(post)
+            db.session.commit()
+            return redirect("/blog")
+        else:
+            print("createファイルが渡せてません。")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # ユーザー名とパスワードの受け取り
         username = request.form.get("username")
         password = request.form.get("password")
-        # データベースから情報を取得
         user = User.query.filter_by(username=username).first()
-        # 入力パスワードとデータベースが一致しているか確認
         if check_password_hash(user.password, password=password):
-            # 一致していれば、ログインさせて、管理画面へリダイレクト
             login_user(user)
-            return redirect("/blog")
+            return redirect("/")
         else:
-            # 間違ってる場合、エラー分と共にログイン画面へリダイレクト
             return redirect("/login", msg="ユーザー名/パスワードが違います")
     elif request.method == "GET":
         return render_template("login.html", msg="")
 
 
+@app.route("/logout", methods=["GET"])
+@login_required
 def logout():
     logout_user()
-    return redirect("/login")
+    return redirect("/")
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -179,13 +180,35 @@ def signup():
 def update(id):
     post = Post.query.get(id)
     if request.method == "GET":
-        return render_template("update.html", post=post)
+        return render_template("update.html", post=post, id=id)
     else:
         post.title = request.form.get("title")
         post.body = request.form.get("body")
-
-        db.session.commit()
-        return redirect("/blog")
+        if "file" in request.files:
+            print("updateファイルが渡せてます。")
+            file = request.files["file"]
+            if file.filename == "":
+                print("ファイル名がありません。")
+                db.session.commit()
+                return redirect("/blog")
+            else:
+                filename = file.filename
+                save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                file.save(save_path)
+                # ここ重要
+                ############################
+                post.img_name = save_path
+                ############################
+                post = Post(title=post.title, body=post.body, img_name=save_path)
+                # print(save_path)
+                # print(post.img_name)
+                post.img_name = save_path
+                db.session.commit()
+                return redirect("/blog")
+        else:
+            print("updateファイルが渡せてません。")
+            db.session.commit()
+            return redirect("/blog")
 
 
 @app.route("/<int:id>/delete", methods=["GET"])
