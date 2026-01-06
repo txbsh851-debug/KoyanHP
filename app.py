@@ -116,10 +116,8 @@ def blog():
 @app.route("/create", methods=["GET", "POST"])
 @login_required
 def create():
-    # URLでhttp://127.0.0.1:5000/uploadを指定したときはGETリクエストとなるのでこっち
     if request.method == "GET":
         return render_template("create.html")
-    # formでsubmitボタンが押されるとPOSTリクエストとなるのでこっち
     elif request.method == "POST":
         title = request.form.get("title")
         body = request.form.get("body")
@@ -195,7 +193,6 @@ def update(id):
                 filename = file.filename
                 save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
                 file.save(save_path)
-                # ここ重要
                 ############################
                 post.img_name = save_path
                 ############################
