@@ -83,7 +83,7 @@ app.config["MAIL_PORT"] = 587  # (SSL)
 app.config["MAIL_USE_TLS"] = True  # TLSを使用する場合
 app.config["MAIL_USE_SSL"] = False  # SSLを使用する場合
 app.config["MAIL_USERNAME"] = "txbsh851@gmail.com"
-app.config["MAIL_PASSWORD"] = "sixw erwr swqo kacd"  # Gmailのアプリパスワード
+app.config["MAIL_PASSWORD"] = "qsdr ouvv nacv hhva"  # Gmailのアプリパスワード
 app.config["MAIL_DEFAULT_SENDER"] = ("Koya Takahashi", "txbsh851@gmail.com")
 
 mail = Mail(app)
@@ -116,8 +116,10 @@ def blog():
 @app.route("/create", methods=["GET", "POST"])
 @login_required
 def create():
+    # URLでhttp://127.0.0.1:5000/uploadを指定したときはGETリクエストとなるのでこっち
     if request.method == "GET":
         return render_template("create.html")
+    # formでsubmitボタンが押されるとPOSTリクエストとなるのでこっち
     elif request.method == "POST":
         title = request.form.get("title")
         body = request.form.get("body")
@@ -182,6 +184,7 @@ def update(id):
     else:
         post.title = request.form.get("title")
         post.body = request.form.get("body")
+        post.create_at = request.form.get("create_at")
         if "file" in request.files:
             print("updateファイルが渡せてます。")
             file = request.files["file"]
@@ -193,6 +196,7 @@ def update(id):
                 filename = file.filename
                 save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
                 file.save(save_path)
+                # ここ重要
                 ############################
                 post.img_name = save_path
                 ############################
@@ -206,6 +210,15 @@ def update(id):
             print("updateファイルが渡せてません。")
             db.session.commit()
             return redirect("/blog")
+
+
+@app.route("/<int:id>/detail", methods=["GET", "POST"])
+def detail(id):
+    post = Post.query.get(id)
+    if request.method == "GET":
+        return render_template(
+            "detail.html", post=post, id=id, create_at=post.create_at
+        )
 
 
 @app.route("/<int:id>/delete", methods=["GET"])

@@ -24,6 +24,7 @@
               <h5>{{ post.body[:100]}}</h5>
               <p>投稿日：{{ post.create_at}}</p>
               <div class="container">
+                <a href="/{{post.id}}/detail" role=button class="btn btn-outline-primary">詳細</a>
                 <a href="/{{post.id}}/update" role=button class="btn btn-outline-success">更新</a>
                 <a href="/{{post.id}}/delete" role=button class="btn btn-outline-danger">削除</a>
               </div>
