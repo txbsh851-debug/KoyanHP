@@ -7,19 +7,19 @@
 <form method="get" action="detail" enctype="multipart/form-data">
     <label for="title" class="form-label"><h2>タイトル</h2></label>
     <br>
-    <label for="title" class="form-label"><h3>{{ post.title }}</h3></label>
+    <label for="title" class="form-label"><h4>{{ post.title}}</h4></label>
     <br>
     <br>
     <label for="body" class="form-label"><h2>内容</h2></label>
     <br>
-    <label for="body" class="form-label"><h3>{{ post.body}}</h3></label>
+    <label for="body" class="form-label"><h5>{{ post.body}}</h5></label>
     <br>
     <br>
     <img src=  ../{{ post.img_name }} alt="画像ファイル" width="500" style="padding: 20px 0 20px 0;">
     <br>
     <label for="create_at" class="form-label"><h2>作成日時</h2></label>
     <br>
-    <label for="create_at" class="form-label"><h3>{{ create_at}}</h3></label>
+    <label for="create_at" class="form-label"><p>{{ post.create_at}}</p></label>
     <br>
     <br>
     <a href="/blog" role=button class="btn btn-outline-success">blogへ戻る</a>

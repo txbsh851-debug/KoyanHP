@@ -18,11 +18,11 @@
         {% for post in posts %}
         <div class="col-xs-6 col-sm-4">
           <div class="card h-100" style="width: 21rem; border-radius: 10px;">
-            <img src= {{ post.img_name }} alt="画像ファイル" width="100" class="card-img-top" style="border-radius: 10px 10px 0 0;">
+            <a href="/{{post.id}}/detail"><img src= {{ post.img_name }} alt="画像ファイル" width="100" class="card-img-top" style="border-radius: 10px 10px 0 0;"></a>
             <div class="card-body" style="border-radius: 10px;">
-              <h4>{{ post.title}}</h4>
-              <h5>{{ post.body[:100]}}</h5>
-              <p>投稿日：{{ post.create_at}}</p>
+              <h4>{{ post.title[:18]}}</h4>
+              <h5>{{ post.body[:20]}}</h5>
+              <p>投稿日：{{ post.create_at[:18]}}</p>
               <div class="container">
                 <a href="/{{post.id}}/detail" role=button class="btn btn-outline-primary">詳細</a>
                 <a href="/{{post.id}}/update" role=button class="btn btn-outline-success">更新</a>

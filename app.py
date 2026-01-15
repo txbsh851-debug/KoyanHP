@@ -184,7 +184,6 @@ def update(id):
     else:
         post.title = request.form.get("title")
         post.body = request.form.get("body")
-        post.create_at = request.form.get("create_at")
         if "file" in request.files:
             print("updateファイルが渡せてます。")
             file = request.files["file"]
